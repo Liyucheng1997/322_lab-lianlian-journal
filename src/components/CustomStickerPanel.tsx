@@ -4,6 +4,8 @@ import { api, type GenMode, type GenStyle, type Job } from '../lib/api'
 import { useJournal } from '../store/journal'
 import { setDragPayload } from '../lib/dnd'
 
+const staticMode = import.meta.env.MODE === 'pages'
+
 const MODES: { id: GenMode; name: string; desc: string }[] = [
   { id: 'cutout', name: '抠出主体', desc: '把照片主体抠成一张贴纸' },
   { id: 'split', name: '拆分元素', desc: '把照片里的各个元素拆成多张贴纸' },
@@ -33,6 +35,7 @@ export function CustomStickerPanel() {
 
   const refresh = () => api.listCustom().then(setList).catch(() => setList([]))
   useEffect(() => {
+    if (staticMode) return
     refresh()
     api.health().then(setHealth).catch(() => setHealth({ ok: false, codex: false }))
     return () => { if (timer.current) window.clearInterval(timer.current) }
@@ -87,7 +90,9 @@ export function CustomStickerPanel() {
     refresh()
   }
 
-  const canRun = !running && (mode === 'text' ? hint.trim().length > 0 : !!file)
+  const canRun = !staticMode && !running && (mode === 'text' ? hint.trim().length > 0 : !!file)
+
+  if (staticMode) return <div><h4>自定义 AI 贴画</h4><p className="hint">在线版可使用内置贴画、模板、翻页、排版与导入导出。AI 贴画需要在本机运行完整版。</p><a href="https://github.com/Liyucheng1997/322_lab-lianlian-journal" target="_blank" rel="noopener noreferrer">下载源码与运行说明 →</a></div>
 
   return (
     <div>

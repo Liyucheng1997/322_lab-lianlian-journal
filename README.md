@@ -64,3 +64,12 @@ src/
 | `API_PORT` | API 端口，默认 3721 |
 | `CODEX_BIN` | 自定义 codex 可执行文件路径 |
 | `CODEX_HOME` | Codex 数据目录，默认 `~/.codex` |
+
+
+## GitHub Pages 在线版
+
+https://liyucheng1997.github.io/322_lab-lianlian-journal/
+
+在线编辑、模板、内置贴画、翻页与 JSON 导入导出均在浏览器运行；AI 贴画需本机 Codex 服务。
+
+`npm run build -- --mode pages` 构建纯静态版；普通构建保留本机服务功能。
